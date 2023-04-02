@@ -4,6 +4,11 @@ import FormInput from "../form-input/form-input";
 import "./signup.scss";
 import CustomButton from "../customButton/custom-button";
 
+import {
+  auth,
+  createUserProfileDocument,
+} from "../../../firebase/firebase.util";
+
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
@@ -20,9 +25,25 @@ class SignUp extends React.Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
-    this.setState({ name: "", email: "", pass: "", confirmPass: "" });
+
+    const { name, email, pass, confirmPass } = this.state;
+
+    if (pass !== confirmPass) {
+      alert("passwords don't match");
+      return;
+    }
+
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(email, pass);
+
+      await createUserProfileDocument(user, { displayName: name });
+
+      this.setState({ name: "", email: "", pass: "", confirmPass: "" });
+    } catch (error) {
+      console.log("error occured", error.message);
+    }
   };
 
   render() {

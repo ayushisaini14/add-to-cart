@@ -1,9 +1,12 @@
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
-// import mealsImage from '../../Assets/shopping.jpg'
 import "./Header.scss";
+
+import { auth } from "../../../firebase/firebase.util";
+
 import HeaderCartButton from "../HeaderCartButton/HeaderCartButton";
-const Header = (props) => {
+
+const Header = ({ currentUser }) => {
   return (
     <Fragment>
       <header className="header">
@@ -17,9 +20,16 @@ const Header = (props) => {
           <Link to="/contact">
             <span className="subtitle">Contact</span>
           </Link>
-          <Link to="/signin">
-            <span className="subtitle">Sign In</span>
-          </Link>
+          {currentUser ? (
+            <div className="subtitle" onClick={() => auth.signOut()}>
+              Sign out
+            </div>
+          ) : (
+            <Link to="/signin">
+              <span className="subtitle">Sign In</span>
+            </Link>
+          )}
+
           <HeaderCartButton />
         </div>
       </header>
