@@ -1,12 +1,18 @@
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
+import { createStructuredSelector } from "reselect";
 import "./Header.scss";
+import { connect } from "react-redux";
 
 import { auth } from "../../../firebase/firebase.util";
 
+import { selectCurrentUser } from "../../../Redux/user/user.selector";
+import { selectCartHidden } from "../../../Redux/cart/cart.selector";
+
+import CartDropdown from "../CartDropdown/CartDropdown";
 import HeaderCartButton from "../HeaderCartButton/HeaderCartButton";
 
-const Header = ({ currentUser }) => {
+const Header = ({ currentUser, hidden }) => {
   return (
     <Fragment>
       <header className="header">
@@ -29,12 +35,17 @@ const Header = ({ currentUser }) => {
               <span className="subtitle">Sign In</span>
             </Link>
           )}
-
           <HeaderCartButton />
         </div>
+        {hidden ? null : <CartDropdown />}
       </header>
     </Fragment>
   );
 };
 
-export default Header;
+const mapStateToProp = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden,
+});
+
+export default connect(mapStateToProp)(Header);
