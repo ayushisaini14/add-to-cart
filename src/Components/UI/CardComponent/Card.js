@@ -10,12 +10,13 @@ import Content from "../ContentComponent/Content";
 
 const Card = ({ itemDetails }) => (
   <div className="container">
-    {itemDetails.map(({ title, imageUrl, id, size }) => (
+    {itemDetails.map(({ title, imageUrl, id, size, linkUrl }) => (
       <Content
         key={id}
         item={title.toUpperCase()}
         imageUrl={imageUrl}
         size={size}
+        linkUrl={linkUrl}
       ></Content>
     ))}
   </div>

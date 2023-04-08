@@ -9,9 +9,10 @@ import Preview from "../PreviewComponent/PreviewComponent";
 
 const Shop = ({ collections }) => (
   <div className="shop-collection">
-    {collections.map(({ id, ...restData }) => (
-      <Preview key={id} {...restData}></Preview>
-    ))}
+    {Object.keys(collections).map((key) => {
+      const { id, ...restData } = collections[key];
+      return <Preview key={id} {...restData}></Preview>;
+    })}
   </div>
 );
 
