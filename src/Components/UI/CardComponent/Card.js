@@ -1,64 +1,28 @@
 import React from "react";
 
-import "./Card.scss";
+import { connect } from "react-redux";
 
+import { createStructuredSelector } from "reselect";
+
+import "./Card.scss";
+import { getitemDetails } from "../../../Redux/card/card.selector";
 import Content from "../ContentComponent/Content";
 
-class Card extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      itemDetails: [
-        {
-          title: "hats",
-          imageUrl: "https://i.ibb.co/cvpntL1/hats.png",
-          id: 1,
-          linkUrl: "shop/hats",
-        },
-        {
-          title: "jackets",
-          imageUrl: "https://i.ibb.co/px2tCc3/jackets.png",
-          id: 2,
-          linkUrl: "shop/jackets",
-        },
-        {
-          title: "sneakers",
-          imageUrl: "https://i.ibb.co/0jqHpnp/sneakers.png",
-          id: 3,
-          linkUrl: "shop/sneakers",
-        },
-        {
-          title: "womens",
-          imageUrl: "https://i.ibb.co/GCCdy8t/womens.png",
-          size: "large",
-          id: 4,
-          linkUrl: "shop/womens",
-        },
-        {
-          title: "mens",
-          imageUrl: "https://i.ibb.co/R70vBrQ/men.png",
-          size: "large",
-          id: 5,
-          linkUrl: "shop/mens",
-        },
-      ],
-    };
-  }
+const Card = ({ itemDetails }) => (
+  <div className="container">
+    {itemDetails.map(({ title, imageUrl, id, size }) => (
+      <Content
+        key={id}
+        item={title.toUpperCase()}
+        imageUrl={imageUrl}
+        size={size}
+      ></Content>
+    ))}
+  </div>
+);
 
-  render() {
-    return (
-      <div className="container">
-        {this.state.itemDetails.map(({ title, imageUrl, id, size }) => (
-          <Content
-            key={id}
-            item={title.toUpperCase()}
-            imageUrl={imageUrl}
-            size={size}
-          ></Content>
-        ))}
-      </div>
-    );
-  }
-}
+const mapStateToProps = createStructuredSelector({
+  itemDetails: getitemDetails,
+});
 
-export default Card;
+export default connect(mapStateToProps)(Card);
